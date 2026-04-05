@@ -25,7 +25,7 @@ docker-compose up -d --build
 - 后端 API 服务：http://localhost:3001
 - Ollama AI 服务：http://localhost:11434
 
-3. 停止并释放容器环境：
+3. 停止并释放容器环境(撤销`up`操作带来的影响)：
 
 ```bash
 docker-compose down

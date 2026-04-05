@@ -12,13 +12,23 @@ services:
       - ollama_data:/root/.ollama
     networks:
       - quillcode-lean-network
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities: [gpu]
+    # ==========================================
+    # 模式一：CPU 模式 (当前配置)
+    # 不添加 deploy 节点。由于 Ollama 镜像默认支持 CPU 推理，因此无需额外配置即可使用 CPU 模式
+    # 默认会使用 CPU 模式进行推理，虽然速度较慢，但可以正常使用
+    # ==========================================
+
+    # ==========================================
+    # 模式二：NVIDIA GPU 加速模式（需要有独立 N 卡）
+    # 对于拥有 NVIDIA GPU 的用户，可以启用此模式以获得更快的推理速度
+    # ==========================================
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
 
   # Backend
   backend:
