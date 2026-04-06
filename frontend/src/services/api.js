@@ -85,7 +85,7 @@ api.interceptors.response.use(
     // Try to get UI store (may not be available during app initialization)
     try {
       uiStore = useUiStore();
-    } catch (e) {
+    } catch {
       // Store not available yet
     }
 

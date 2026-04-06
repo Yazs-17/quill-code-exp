@@ -77,7 +77,7 @@ function retry() {
   articleStore.fetchArticles();
 }
 
-function handleTagSelect(tag) {
+function handleTagSelect() {
   // Tag articles are fetched by TagCloud component
 }
 

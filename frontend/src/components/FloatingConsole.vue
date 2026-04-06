@@ -8,11 +8,8 @@ const props = defineProps({
   },
 });
 
-const emits = defineEmits(['clean', 'run']);
+defineEmits(['clean', 'run']);
 
-const emitClean = (e) => {
-  emit('clean', 'Clean Now ');
-};
 
 const parentMsg = ref('no text');
 
@@ -138,7 +135,7 @@ defineExpose({
       <div>
         <ul class="console-interactive">
           <!-- <li v-for="val in ">{{ parentMsg }}</li> -->
-          <li v-for="log in consoleLog">{{ log }}</li>
+          <li v-for="(log, index) in consoleLog" :key="index">{{ log }}</li>
         </ul>
       </div>
     </div>

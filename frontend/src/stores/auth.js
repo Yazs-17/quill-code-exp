@@ -65,7 +65,7 @@ export const useAuthStore = defineStore('auth', () => {
       const response = await authService.getProfile();
       setUser(response);
       return response;
-    } catch (err) {
+    } catch {
       // Token invalid, clear it
       logout();
       return null;

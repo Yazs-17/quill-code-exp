@@ -5,7 +5,7 @@ import { storeToRefs } from 'pinia';
 import { useAuthStore } from '../../stores/auth';
 import { useUiStore } from '../../stores/ui';
 
-const props = defineProps({
+defineProps({
   title: {
     type: String,
     default: 'QuillCode',

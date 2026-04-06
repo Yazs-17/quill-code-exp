@@ -5,7 +5,7 @@ import { storeToRefs } from 'pinia';
 import { useUiStore } from '../../stores/ui';
 import { useTagStore } from '../../stores/tag';
 
-const props = defineProps({
+defineProps({
   collapsed: {
     type: Boolean,
     default: false,

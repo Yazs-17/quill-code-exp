@@ -61,7 +61,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { useTagStore } from '../../stores/tag';
 import { storeToRefs } from 'pinia';
 
@@ -79,7 +79,7 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue']);
 
 const tagStore = useTagStore();
-const { tags, loading } = storeToRefs(tagStore);
+const { tags } = storeToRefs(tagStore);
 
 const searchQuery = ref('');
 const showDropdown = ref(false);

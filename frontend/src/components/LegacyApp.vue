@@ -12,7 +12,7 @@ import FloatingItem from './FloatingConsole.vue';
 // }
 const fmsg = ref('');
 // const jsConsole = ref([]);
-const clean = (e) => {
+const clean = () => {
   fmsg.value = '';
   // jsConsole.value = []
 };
@@ -46,7 +46,7 @@ const mode = ref(ENUM.value.JS);
 const editorContent = ref(`
 代码加载中...
 `);
-const outputMsg = ref({ type: 'log', text: '' });
+
 
 let url = new URL('../utils/executor.js', import.meta.url);
 const worker = new Worker(url, { type: 'module' });
@@ -150,7 +150,7 @@ const previewFile = async (index = 0) => {
     const content = text.split('---');
     leftPassage.value = content[0] ?? '';
     editorContent.value = content[1] ?? '';
-  } catch (err) {
+  } catch {
     // fallback if fetch fails
     leftPassage.value = '';
     editorContent.value = '';

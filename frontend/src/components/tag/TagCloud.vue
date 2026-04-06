@@ -40,7 +40,7 @@ import { computed, onMounted } from 'vue';
 import { useTagStore } from '../../stores/tag';
 import { storeToRefs } from 'pinia';
 
-const props = defineProps({
+defineProps({
   title: {
     type: String,
     default: '标签',

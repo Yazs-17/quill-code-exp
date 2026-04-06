@@ -5,7 +5,7 @@ import { useTagStore } from '../../stores/tag';
 import AppHeader from './AppHeader.vue';
 import AppSidebar from './AppSidebar.vue';
 
-const props = defineProps({
+defineProps({
   showSidebar: {
     type: Boolean,
     default: true,

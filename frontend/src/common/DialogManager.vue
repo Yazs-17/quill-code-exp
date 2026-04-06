@@ -1,8 +1,8 @@
 <script setup>
 import { ref } from 'vue';
-const props = defineProps({});
+defineProps({});
 
-const emits = defineEmits([]);
+defineEmits([]);
 
 const isDisplay = ref(true);
 
