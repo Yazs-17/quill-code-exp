@@ -156,7 +156,7 @@ function handleClickOutside(e) {
 }
 
 onMounted(() => {
-  tagStore.fetchTags();
+  // Note: tag loading phase is transferred to src/plugins/TagSyncPlugin.js plugin
   document.addEventListener('click', handleClickOutside);
 });
 

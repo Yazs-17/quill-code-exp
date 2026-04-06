@@ -85,7 +85,7 @@ function clearFilter() {
 
 onMounted(() => {
   if (tags.value.length === 0) {
-    tagStore.fetchTags();
+    // Note: fetchTags() logic is now handled by TagSyncPlugin
   }
 });
 </script>

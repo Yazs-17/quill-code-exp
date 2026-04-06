@@ -30,7 +30,7 @@ function handleTagSelect(tagId) {
 onMounted(() => {
   authStore.init();
   if (authStore.isAuthenticated) {
-    tagStore.fetchTags();
+    // Note: tag loading phase is transferred to src/plugins/TagSyncPlugin.js plugin
   }
 });
 </script>
