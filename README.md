@@ -14,7 +14,7 @@
 
 需确保系统已正确安装 Docker 与 Docker Compose。
 
-1. 在项目根目录执行以下命令，以后台模式构建并启动服务：
+1. 以后台模式构建(或重新构建)并启动服务：
 
 ```bash
 docker-compose up -d --build
@@ -29,6 +29,12 @@ docker-compose up -d --build
 
 ```bash
 docker-compose down
+```
+
+4. 日常启动/重启
+
+```bash
+docker-compose up -d
 ```
 
 ### 方式二：本地开发模式
