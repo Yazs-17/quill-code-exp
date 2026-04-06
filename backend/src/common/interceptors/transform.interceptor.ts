@@ -28,7 +28,7 @@ export class TransformInterceptor<T> implements NestInterceptor<
       map((data) => ({
         code: ErrorCode.SUCCESS,
         message: 'Success',
-        data,
+        data: data as unknown,
         timestamp: Date.now(),
       })),
     );

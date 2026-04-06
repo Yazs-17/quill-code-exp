@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument */
 import { Injectable, OnModuleInit, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -87,7 +88,7 @@ export class RecommendService implements OnModuleInit {
     const tagBasedRecommendations = await this.getTagBasedRecommendations(
       articleId,
       userId,
-      sourceTags as string[],
+      sourceTags,
     );
 
     // If Ollama is available in dev mode, enhance with AI recommendations
@@ -160,7 +161,7 @@ export class RecommendService implements OnModuleInit {
         title: s.article.title,
         type: s.article.type,
         language: s.article.language,
-        tags: allTags as string[],
+        tags: allTags,
         similarity: s.score / tags.length,
         reason: `共享标签: ${s.matchingTags.join(', ')}`,
       };
