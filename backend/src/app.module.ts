@@ -3,12 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import {
-  databaseConfig,
-  jwtConfig,
-  appConfig,
-  ollamaConfig,
-} from './config';
+import { databaseConfig, jwtConfig, appConfig, ollamaConfig } from './config';
 import { User, Article, Tag, ArticleTag, Share, Comment } from './entities';
 import {
   AuthModule,
@@ -25,12 +20,7 @@ import { AdminModule } from './modules/admin';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [
-        databaseConfig,
-        jwtConfig,
-        appConfig,
-        ollamaConfig,
-      ],
+      load: [databaseConfig, jwtConfig, appConfig, ollamaConfig],
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
