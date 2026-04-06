@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-argument */
 import {
   Injectable,
   NestInterceptor,
@@ -28,7 +29,7 @@ export class TransformInterceptor<T> implements NestInterceptor<
       map((data) => ({
         code: ErrorCode.SUCCESS,
         message: 'Success',
-        data: data as unknown,
+        data: data as T,
         timestamp: Date.now(),
       })),
     );
