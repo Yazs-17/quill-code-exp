@@ -1,0 +1,4 @@
+# backend/.prettierignore
+node_modules
+dist
+build
