@@ -38,7 +38,7 @@ services:
     container_name: quillcode-lean-backend
     restart: unless-stopped
     environment:
-      - APP_MODE=prod
+      - APP_MODE=dev # ollama 只在开发模式下启用，生产模式下不启用
       - PORT=3000
       - DB_DATABASE=/app/data/code_notebook.sqlite
       - JWT_SECRET=48a287ab9497e852de30327444b0809e55d46466
