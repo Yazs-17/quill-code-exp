@@ -1,10 +1,10 @@
 <script setup>
-import { computed } from 'vue'
-import { useUiStore } from '../../stores/ui'
+import { computed } from 'vue';
+import { useUiStore } from '../../stores/ui';
 
-const uiStore = useUiStore()
+const uiStore = useUiStore();
 
-const toast = computed(() => uiStore.toast)
+const toast = computed(() => uiStore.toast);
 
 // Use CSS classes for icons instead of emoji/symbols
 const iconClass = computed(() => {
@@ -12,10 +12,10 @@ const iconClass = computed(() => {
     success: 'toast-icon-success',
     error: 'toast-icon-error',
     warning: 'toast-icon-warning',
-    info: 'toast-icon-info'
-  }
-  return classMap[toast.value?.type] || classMap.info
-})
+    info: 'toast-icon-info',
+  };
+  return classMap[toast.value?.type] || classMap.info;
+});
 </script>
 
 <template>

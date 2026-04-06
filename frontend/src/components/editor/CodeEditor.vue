@@ -12,53 +12,60 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, watch, nextTick } from 'vue'
-import loader from '@monaco-editor/loader'
+import { ref, onMounted, onUnmounted, watch, nextTick } from 'vue';
+import loader from '@monaco-editor/loader';
 
 const props = defineProps({
   modelValue: {
     type: String,
-    default: ''
+    default: '',
   },
   language: {
     type: String,
-    default: 'javascript'
+    default: 'javascript',
   },
   theme: {
     type: String,
-    default: 'vs-dark'
+    default: 'vs-dark',
   },
   readOnly: {
     type: Boolean,
-    default: false
+    default: false,
   },
   minimap: {
     type: Boolean,
-    default: false
+    default: false,
   },
   lineNumbers: {
     type: String,
-    default: 'on'
+    default: 'on',
   },
   fontSize: {
     type: Number,
-    default: 14
+    default: 14,
   },
   tabSize: {
     type: Number,
-    default: 2
+    default: 2,
   },
   showShortcuts: {
     type: Boolean,
-    default: true
-  }
-})
+    default: true,
+  },
+});
 
-const emit = defineEmits(['update:modelValue', 'ready', 'focus', 'blur', 'save', 'run'])
+const emit = defineEmits([
+  'update:modelValue',
+  'ready',
+  'focus',
+  'blur',
+  'save',
+  'run',
+]);
 
-const containerRef = ref(null)
-let editor = null
-let monaco = null
+const containerRef = ref(null);
+let editor = null;
+let monaco = null;
 
 // Language mapping for Monaco
 const languageMap = {
@@ -73,17 +80,17 @@ const languageMap = {
   markdown: 'markdown',
   sql: 'sql',
   shell: 'shell',
-  bash: 'shell'
-}
+  bash: 'shell',
+};
 
 function getMonacoLanguage(lang) {
-  return languageMap[lang] || lang || 'javascript'
+  return languageMap[lang] || lang || 'javascript';
 }
 
 async function initEditor() {
-  if (!containerRef.value) return
+  if (!containerRef.value) return;
 
-  monaco = await loader.init()
+  monaco = await loader.init();
 
   editor = monaco.editor.create(containerRef.value, {
     value: props.modelValue,
@@ -104,90 +111,102 @@ async function initEditor() {
     cursorStyle: 'line',
     contextmenu: true,
     formatOnPaste: true,
-    formatOnType: true
-  })
+    formatOnType: true,
+  });
 
   // Add custom keyboard shortcuts
   editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, () => {
-    emit('save')
-  })
+    emit('save');
+  });
 
   editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => {
-    emit('run')
-  })
+    emit('run');
+  });
 
   // Listen for content changes
   editor.onDidChangeModelContent(() => {
-    const value = editor.getValue()
-    emit('update:modelValue', value)
-  })
+    const value = editor.getValue();
+    emit('update:modelValue', value);
+  });
 
   // Listen for focus/blur
   editor.onDidFocusEditorText(() => {
-    emit('focus')
-  })
+    emit('focus');
+  });
 
   editor.onDidBlurEditorText(() => {
-    emit('blur')
-  })
+    emit('blur');
+  });
 
-  emit('ready', { editor, monaco })
+  emit('ready', { editor, monaco });
 }
 
 // Watch for external value changes
-watch(() => props.modelValue, (newValue) => {
-  if (editor && newValue !== editor.getValue()) {
-    editor.setValue(newValue || '')
-  }
-})
+watch(
+  () => props.modelValue,
+  (newValue) => {
+    if (editor && newValue !== editor.getValue()) {
+      editor.setValue(newValue || '');
+    }
+  },
+);
 
 // Watch for language changes
-watch(() => props.language, (newLang) => {
-  if (editor && monaco) {
-    const model = editor.getModel()
-    if (model) {
-      monaco.editor.setModelLanguage(model, getMonacoLanguage(newLang))
+watch(
+  () => props.language,
+  (newLang) => {
+    if (editor && monaco) {
+      const model = editor.getModel();
+      if (model) {
+        monaco.editor.setModelLanguage(model, getMonacoLanguage(newLang));
+      }
     }
-  }
-})
+  },
+);
 
 // Watch for theme changes
-watch(() => props.theme, (newTheme) => {
-  if (monaco) {
-    monaco.editor.setTheme(newTheme)
-  }
-})
+watch(
+  () => props.theme,
+  (newTheme) => {
+    if (monaco) {
+      monaco.editor.setTheme(newTheme);
+    }
+  },
+);
 
 // Watch for readOnly changes
-watch(() => props.readOnly, (newValue) => {
-  if (editor) {
-    editor.updateOptions({ readOnly: newValue })
-  }
-})
+watch(
+  () => props.readOnly,
+  (newValue) => {
+    if (editor) {
+      editor.updateOptions({ readOnly: newValue });
+    }
+  },
+);
 
 // Expose methods for parent components
 function getValue() {
-  return editor?.getValue() || ''
+  return editor?.getValue() || '';
 }
 
 function setValue(value) {
-  editor?.setValue(value || '')
+  editor?.setValue(value || '');
 }
 
 function focus() {
-  editor?.focus()
+  editor?.focus();
 }
 
 function formatDocument() {
-  editor?.getAction('editor.action.formatDocument')?.run()
+  editor?.getAction('editor.action.formatDocument')?.run();
 }
 
 function getEditor() {
-  return editor
+  return editor;
 }
 
 function getMonaco() {
-  return monaco
+  return monaco;
 }
 
 defineExpose({
@@ -196,21 +215,21 @@ defineExpose({
   focus,
   formatDocument,
   getEditor,
-  getMonaco
-})
+  getMonaco,
+});
 
 onMounted(() => {
   nextTick(() => {
-    initEditor()
-  })
-})
+    initEditor();
+  });
+});
 
 onUnmounted(() => {
   if (editor) {
-    editor.dispose()
-    editor = null
+    editor.dispose();
+    editor = null;
   }
-})
+});
 </script>
 
 <style scoped>

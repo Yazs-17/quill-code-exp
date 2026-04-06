@@ -1,51 +1,51 @@
 <script setup>
-import { onMounted } from 'vue'
-import { useAuthStore } from '../../stores/auth'
-import { useTagStore } from '../../stores/tag'
-import AppHeader from './AppHeader.vue'
-import AppSidebar from './AppSidebar.vue'
+import { onMounted } from 'vue';
+import { useAuthStore } from '../../stores/auth';
+import { useTagStore } from '../../stores/tag';
+import AppHeader from './AppHeader.vue';
+import AppSidebar from './AppSidebar.vue';
 
 const props = defineProps({
   showSidebar: {
     type: Boolean,
-    default: true
+    default: true,
   },
   showNav: {
     type: Boolean,
-    default: true
-  }
-})
+    default: true,
+  },
+});
 
-const emit = defineEmits(['tagSelect'])
+const emit = defineEmits(['tagSelect']);
 
-const selectedTag = defineModel('selectedTag', { default: null })
+const selectedTag = defineModel('selectedTag', { default: null });
 
-const authStore = useAuthStore()
-const tagStore = useTagStore()
+const authStore = useAuthStore();
+const tagStore = useTagStore();
 
 function handleTagSelect(tagId) {
-  emit('tagSelect', tagId)
+  emit('tagSelect', tagId);
 }
 
 onMounted(() => {
-  authStore.init()
+  authStore.init();
   if (authStore.isAuthenticated) {
-    tagStore.fetchTags()
+    tagStore.fetchTags();
   }
-})
+});
 </script>
 
 <template>
   <div class="app-layout">
     <AppHeader :show-nav="showNav" />
-    
+
     <div class="app-body">
-      <AppSidebar 
+      <AppSidebar
         v-if="showSidebar && authStore.isAuthenticated"
         v-model:selectedTag="selectedTag"
         @tag-select="handleTagSelect"
       />
-      
+
       <main class="app-main">
         <slot></slot>
       </main>

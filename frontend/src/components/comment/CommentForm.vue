@@ -33,38 +33,38 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed } from 'vue';
 
 const props = defineProps({
   submitting: {
     type: Boolean,
-    default: false
-  }
-})
+    default: false,
+  },
+});
 
-const emit = defineEmits(['submit'])
+const emit = defineEmits(['submit']);
 
-const authorName = ref('')
-const content = ref('')
+const authorName = ref('');
+const content = ref('');
 
 const canSubmit = computed(() => {
-  return authorName.value.trim().length > 0 && content.value.trim().length > 0
-})
+  return authorName.value.trim().length > 0 && content.value.trim().length > 0;
+});
 
 function submitComment() {
-  if (!canSubmit.value || props.submitting) return
-  
+  if (!canSubmit.value || props.submitting) return;
+
   emit('submit', {
     authorName: authorName.value.trim(),
-    content: content.value.trim()
-  })
+    content: content.value.trim(),
+  });
 }
 
 function reset() {
-  content.value = ''
+  content.value = '';
 }
 
-defineExpose({ reset })
+defineExpose({ reset });
 </script>
 
 <style scoped>

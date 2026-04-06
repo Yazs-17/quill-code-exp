@@ -2,7 +2,7 @@
   <div class="auth-container">
     <div class="auth-card">
       <h2>注册</h2>
-      
+
       <form @submit.prevent="handleRegister" class="auth-form">
         <div class="form-group">
           <label for="username">用户名</label>
@@ -73,61 +73,66 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
-import { useRouter } from 'vue-router'
-import { useAuthStore } from '../stores/auth'
+import { ref, reactive } from 'vue';
+import { useRouter } from 'vue-router';
+import { useAuthStore } from '../stores/auth';
 
-const router = useRouter()
-const authStore = useAuthStore()
+const router = useRouter();
+const authStore = useAuthStore();
 
 const form = reactive({
   username: '',
   email: '',
   password: '',
-  confirmPassword: ''
-})
+  confirmPassword: '',
+});
 
-const loading = ref(false)
-const errorMsg = ref('')
-const successMsg = ref('')
+const loading = ref(false);
+const errorMsg = ref('');
+const successMsg = ref('');
 
 async function handleRegister() {
-  errorMsg.value = ''
-  successMsg.value = ''
+  errorMsg.value = '';
+  successMsg.value = '';
 
   // Validation
-  if (!form.username || !form.email || !form.password || !form.confirmPassword) {
-    errorMsg.value = '请填写所有字段'
-    return
+  if (
+    !form.username ||
+    !form.email ||
+    !form.password ||
+    !form.confirmPassword
+  ) {
+    errorMsg.value = '请填写所有字段';
+    return;
   }
 
   if (form.username.length < 3 || form.username.length > 20) {
-    errorMsg.value = '用户名需要3-20个字符'
-    return
+    errorMsg.value = '用户名需要3-20个字符';
+    return;
   }
 
   if (form.password.length < 6) {
-    errorMsg.value = '密码至少需要6个字符'
-    return
+    errorMsg.value = '密码至少需要6个字符';
+    return;
   }
 
   if (form.password !== form.confirmPassword) {
-    errorMsg.value = '两次输入的密码不一致'
-    return
+    errorMsg.value = '两次输入的密码不一致';
+    return;
   }
 
-  loading.value = true
+  loading.value = true;
 
   try {
-    await authStore.register(form.username, form.email, form.password)
-    successMsg.value = '注册成功！正在跳转到登录页...'
+    await authStore.register(form.username, form.email, form.password);
+    successMsg.value = '注册成功！正在跳转到登录页...';
     setTimeout(() => {
-      router.push('/login')
-    }, 1500)
+      router.push('/login');
+    }, 1500);
   } catch (err) {
-    errorMsg.value = err.message || '注册失败，请稍后重试'
+    errorMsg.value = err.message || '注册失败，请稍后重试';
   } finally {
-    loading.value = false
+    loading.value = false;
   }
 }
 </script>

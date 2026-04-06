@@ -8,7 +8,7 @@
         </button>
       </div>
     </div>
-    
+
     <div class="preview-content">
       <iframe
         ref="iframeRef"
@@ -21,37 +21,39 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch } from 'vue';
 
 const props = defineProps({
   code: {
     type: String,
-    default: ''
+    default: '',
   },
   language: {
     type: String,
-    default: 'html'
-  }
-})
+    default: 'html',
+  },
+});
 
-const iframeRef = ref(null)
-const refreshKey = ref(0)
+const iframeRef = ref(null);
+const refreshKey = ref(0);
 
 // Generate full HTML document from code
 const htmlContent = computed(() => {
-  const code = props.code || ''
-  
+  const code = props.code || '';
+
   // If it's already a complete HTML document, use it directly
-  if (code.trim().toLowerCase().startsWith('<!doctype') || 
-      code.trim().toLowerCase().startsWith('<html')) {
-    return code
+  if (
+    code.trim().toLowerCase().startsWith('<!doctype') ||
+    code.trim().toLowerCase().startsWith('<html')
+  ) {
+    return code;
   }
-  
+
   // For Vue-like code, wrap in a basic template
   if (props.language === 'vue') {
-    return generateVuePreview(code)
+    return generateVuePreview(code);
   }
-  
+
   // For plain HTML, wrap in a basic document
   return `
 <!DOCTYPE html>
@@ -71,19 +73,19 @@ const htmlContent = computed(() => {
 <body>
 ${code}
 </body>
-</html>`
-})
+</html>`;
+});
 
 function generateVuePreview(code) {
   // Extract template, script, and style sections
-  const templateMatch = code.match(/<template>([\s\S]*?)<\/template>/i)
-  const scriptMatch = code.match(/<script[^>]*>([\s\S]*?)<\/script>/i)
-  const styleMatch = code.match(/<style[^>]*>([\s\S]*?)<\/style>/i)
-  
-  const template = templateMatch ? templateMatch[1].trim() : code
-  const script = scriptMatch ? scriptMatch[1].trim() : ''
-  const style = styleMatch ? styleMatch[1].trim() : ''
-  
+  const templateMatch = code.match(/<template>([\s\S]*?)<\/template>/i);
+  const scriptMatch = code.match(/<script[^>]*>([\s\S]*?)<\/script>/i);
+  const styleMatch = code.match(/<style[^>]*>([\s\S]*?)<\/style>/i);
+
+  const template = templateMatch ? templateMatch[1].trim() : code;
+  const script = scriptMatch ? scriptMatch[1].trim() : '';
+  const style = styleMatch ? styleMatch[1].trim() : '';
+
   return `
 <!DOCTYPE html>
 <html>
@@ -107,7 +109,9 @@ function generateVuePreview(code) {
     const { createApp, ref, reactive, computed, watch, onMounted } = Vue;
     
     try {
-      ${script ? `
+      ${
+        script
+          ? `
         const componentOptions = (function() {
           ${script}
         })();
@@ -117,44 +121,49 @@ function generateVuePreview(code) {
         } else {
           createApp({}).mount('#app');
         }
-      ` : `
+      `
+          : `
         createApp({}).mount('#app');
-      `}
+      `
+      }
     } catch (e) {
       document.getElementById('app').innerHTML = '<div style="color: red;">Error: ' + e.message + '</div>';
       console.error(e);
     }
   <\/script>
 </body>
-</html>`
+</html>`;
 }
 
 function refresh() {
-  refreshKey.value++
+  refreshKey.value++;
   // Force iframe reload by updating srcdoc
   if (iframeRef.value) {
-    const content = htmlContent.value
-    iframeRef.value.srcdoc = ''
+    const content = htmlContent.value;
+    iframeRef.value.srcdoc = '';
     setTimeout(() => {
       if (iframeRef.value) {
-        iframeRef.value.srcdoc = content
+        iframeRef.value.srcdoc = content;
       }
-    }, 50)
+    }, 50);
   }
 }
 
 // Watch for code changes and auto-refresh (debounced)
-let debounceTimer = null
-watch(() => props.code, () => {
-  clearTimeout(debounceTimer)
-  debounceTimer = setTimeout(() => {
-    refreshKey.value++
-  }, 500)
-})
+let debounceTimer = null;
+watch(
+  () => props.code,
+  () => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+      refreshKey.value++;
+    }, 500);
+  },
+);
 
 defineExpose({
-  refresh
-})
+  refresh,
+});
 </script>
 
 <style scoped>

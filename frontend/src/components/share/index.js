@@ -1,1 +1,1 @@
-export { default as ShareDialog } from './ShareDialog.vue'
+export { default as ShareDialog } from './ShareDialog.vue';

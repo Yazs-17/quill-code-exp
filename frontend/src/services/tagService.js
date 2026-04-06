@@ -1,15 +1,15 @@
-import api from './api'
+import api from './api';
 
 export const tagService = {
-	async getTags () {
-		return api.get('/tags')
-	},
+  async getTags() {
+    return api.get('/tags');
+  },
 
-	async getTagArticles (id) {
-		return api.get(`/tags/${id}/articles`)
-	},
+  async getTagArticles(id) {
+    return api.get(`/tags/${id}/articles`);
+  },
 
-	async createTag (name) {
-		return api.post('/tags', { name })
-	}
-}
+  async createTag(name) {
+    return api.post('/tags', { name });
+  },
+};

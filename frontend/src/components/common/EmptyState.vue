@@ -1,43 +1,43 @@
 <script setup>
-import { computed } from 'vue'
+import { computed } from 'vue';
 
 const props = defineProps({
   icon: {
     type: String,
-    default: 'empty'
+    default: 'empty',
   },
   title: {
     type: String,
-    default: '暂无数据'
+    default: '暂无数据',
   },
   description: {
     type: String,
-    default: ''
+    default: '',
   },
   actionText: {
     type: String,
-    default: ''
-  }
-})
+    default: '',
+  },
+});
 
-const emit = defineEmits(['action'])
+const emit = defineEmits(['action']);
 
 // Map icon names to CSS classes
 const iconClass = computed(() => {
   const iconMap = {
-    'empty': 'icon-empty',
-    'document': 'icon-document',
-    'search': 'icon-search',
-    'link': 'icon-link',
-    'tag': 'icon-tag',
-    'error': 'icon-error',
-    'comment': 'icon-comment'
-  }
-  return iconMap[props.icon] || 'icon-empty'
-})
+    empty: 'icon-empty',
+    document: 'icon-document',
+    search: 'icon-search',
+    link: 'icon-link',
+    tag: 'icon-tag',
+    error: 'icon-error',
+    comment: 'icon-comment',
+  };
+  return iconMap[props.icon] || 'icon-empty';
+});
 
 function handleAction() {
-  emit('action')
+  emit('action');
 }
 </script>
 

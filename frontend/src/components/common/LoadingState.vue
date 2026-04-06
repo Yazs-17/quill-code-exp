@@ -2,14 +2,14 @@
 defineProps({
   text: {
     type: String,
-    default: '加载中...'
+    default: '加载中...',
   },
   size: {
     type: String,
     default: 'medium',
-    validator: (v) => ['small', 'medium', 'large'].includes(v)
-  }
-})
+    validator: (v) => ['small', 'medium', 'large'].includes(v),
+  },
+});
 </script>
 
 <template>
@@ -68,7 +68,9 @@ defineProps({
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .loading-text {

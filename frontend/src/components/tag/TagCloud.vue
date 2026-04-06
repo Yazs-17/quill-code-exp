@@ -11,24 +11,20 @@
       </button>
     </div>
 
-    <div v-if="loading" class="loading">
-      加载中...
-    </div>
+    <div v-if="loading" class="loading">加载中...</div>
 
-    <div v-else-if="tags.length === 0" class="empty">
-      暂无标签
-    </div>
+    <div v-else-if="tags.length === 0" class="empty">暂无标签</div>
 
     <div v-else class="tags-container">
       <span
         v-for="tag in sortedTags"
         :key="tag.id"
         class="tag-item"
-        :class="{ 
+        :class="{
           active: tag.id === selectedTagId,
           'size-lg': tag.articleCount >= 10,
           'size-md': tag.articleCount >= 5 && tag.articleCount < 10,
-          'size-sm': tag.articleCount < 5
+          'size-sm': tag.articleCount < 5,
         }"
         @click="handleTagClick(tag)"
       >
@@ -40,58 +36,58 @@
 </template>
 
 <script setup>
-import { computed, onMounted } from 'vue'
-import { useTagStore } from '../../stores/tag'
-import { storeToRefs } from 'pinia'
+import { computed, onMounted } from 'vue';
+import { useTagStore } from '../../stores/tag';
+import { storeToRefs } from 'pinia';
 
 const props = defineProps({
   title: {
     type: String,
-    default: '标签'
+    default: '标签',
   },
   showHeader: {
     type: Boolean,
-    default: true
+    default: true,
   },
   showCount: {
     type: Boolean,
-    default: true
-  }
-})
+    default: true,
+  },
+});
 
-const emit = defineEmits(['select', 'clear'])
+const emit = defineEmits(['select', 'clear']);
 
-const tagStore = useTagStore()
-const { tags, loading, selectedTagId } = storeToRefs(tagStore)
+const tagStore = useTagStore();
+const { tags, loading, selectedTagId } = storeToRefs(tagStore);
 
 const sortedTags = computed(() => {
   return [...tags.value].sort((a, b) => {
     // Sort by article count descending, then by name
-    const countDiff = (b.articleCount || 0) - (a.articleCount || 0)
-    if (countDiff !== 0) return countDiff
-    return a.name.localeCompare(b.name)
-  })
-})
+    const countDiff = (b.articleCount || 0) - (a.articleCount || 0);
+    if (countDiff !== 0) return countDiff;
+    return a.name.localeCompare(b.name);
+  });
+});
 
 function handleTagClick(tag) {
   if (tag.id === selectedTagId.value) {
-    clearFilter()
+    clearFilter();
   } else {
-    tagStore.fetchTagArticles(tag.id)
-    emit('select', tag)
+    tagStore.fetchTagArticles(tag.id);
+    emit('select', tag);
   }
 }
 
 function clearFilter() {
-  tagStore.clearTagFilter()
-  emit('clear')
+  tagStore.clearTagFilter();
+  emit('clear');
 }
 
 onMounted(() => {
   if (tags.value.length === 0) {
-    tagStore.fetchTags()
+    tagStore.fetchTags();
   }
-})
+});
 </script>
 
 <style scoped>
@@ -128,7 +124,8 @@ onMounted(() => {
   background: rgba(74, 144, 217, 0.1);
 }
 
-.loading, .empty {
+.loading,
+.empty {
   text-align: center;
   padding: 16px;
   color: #999;

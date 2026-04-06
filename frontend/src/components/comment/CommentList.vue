@@ -1,21 +1,17 @@
 <template>
   <div class="comment-list">
     <h4>评论 ({{ comments.length }})</h4>
-    
+
     <div v-if="loading" class="loading">
       <span>加载评论中...</span>
     </div>
-    
+
     <div v-else-if="comments.length === 0" class="empty">
       <span>暂无评论，来发表第一条评论吧！</span>
     </div>
-    
+
     <div v-else class="comments">
-      <div 
-        v-for="comment in comments" 
-        :key="comment.id" 
-        class="comment-item"
-      >
+      <div v-for="comment in comments" :key="comment.id" class="comment-item">
         <div class="comment-header">
           <span class="author-name">{{ comment.authorName }}</span>
           <span class="comment-time">{{ formatTime(comment.createdAt) }}</span>
@@ -30,47 +26,47 @@
 defineProps({
   comments: {
     type: Array,
-    default: () => []
+    default: () => [],
   },
   loading: {
     type: Boolean,
-    default: false
-  }
-})
+    default: false,
+  },
+});
 
 function formatTime(dateStr) {
-  const date = new Date(dateStr)
-  const now = new Date()
-  const diff = now - date
-  
+  const date = new Date(dateStr);
+  const now = new Date();
+  const diff = now - date;
+
   // Less than 1 minute
   if (diff < 60000) {
-    return '刚刚'
+    return '刚刚';
   }
-  
+
   // Less than 1 hour
   if (diff < 3600000) {
-    return `${Math.floor(diff / 60000)} 分钟前`
+    return `${Math.floor(diff / 60000)} 分钟前`;
   }
-  
+
   // Less than 24 hours
   if (diff < 86400000) {
-    return `${Math.floor(diff / 3600000)} 小时前`
+    return `${Math.floor(diff / 3600000)} 小时前`;
   }
-  
+
   // Less than 7 days
   if (diff < 604800000) {
-    return `${Math.floor(diff / 86400000)} 天前`
+    return `${Math.floor(diff / 86400000)} 天前`;
   }
-  
+
   // Format as date
   return date.toLocaleDateString('zh-CN', {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
     hour: '2-digit',
-    minute: '2-digit'
-  })
+    minute: '2-digit',
+  });
 }
 </script>
 

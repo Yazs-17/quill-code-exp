@@ -1,20 +1,34 @@
-import js from "@eslint/js";
-import globals from "globals";
-import tseslint from "typescript-eslint";
-import pluginVue from "eslint-plugin-vue";
-import json from "@eslint/json";
-import markdown from "@eslint/markdown";
-import css from "@eslint/css";
-import { defineConfig } from "eslint/config";
+import js from '@eslint/js';
+import tseslint from 'typescript-eslint';
+import pluginVue from 'eslint-plugin-vue';
+import vueParser from 'vue-eslint-parser';
 
-export default defineConfig([
-  { files: ["**/*.{js,mjs,cjs,ts,mts,cts,vue}"], plugins: { js }, extends: ["js/recommended"], languageOptions: { globals: {...globals.browser, ...globals.node} } },
-  tseslint.configs.recommended,
-  pluginVue.configs["flat/essential"],
-  { files: ["**/*.vue"], languageOptions: { parserOptions: { parser: tseslint.parser } } },
-  { files: ["**/*.json"], plugins: { json }, language: "json/json", extends: ["json/recommended"] },
-  { files: ["**/*.jsonc"], plugins: { json }, language: "json/jsonc", extends: ["json/recommended"] },
-  { files: ["**/*.json5"], plugins: { json }, language: "json/json5", extends: ["json/recommended"] },
-  { files: ["**/*.md"], plugins: { markdown }, language: "markdown/gfm", extends: ["markdown/recommended"] },
-  { files: ["**/*.css"], plugins: { css }, language: "css/css", extends: ["css/recommended"] },
-]);
+export default [
+  // 忽略
+  {
+    ignores: ['node_modules', 'dist', 'build'],
+  },
+
+  // JS
+  {
+    files: ['**/*.js'],
+    ...js.configs.recommended,
+  },
+
+  // TS（必须展开）
+  ...tseslint.configs.recommended,
+
+  // Vue（必须展开）
+  ...pluginVue.configs['flat/essential'],
+
+  // Vue parser（单独补充）
+  {
+    files: ['**/*.vue'],
+    languageOptions: {
+      parser: vueParser,
+      parserOptions: {
+        parser: tseslint.parser,
+      },
+    },
+  },
+];

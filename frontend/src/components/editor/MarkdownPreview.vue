@@ -3,28 +3,28 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
-import { marked } from 'marked'
+import { computed } from 'vue';
+import { marked } from 'marked';
 
 const props = defineProps({
   content: {
     type: String,
-    default: ''
-  }
-})
+    default: '',
+  },
+});
 
 // Configure marked options
 marked.setOptions({
   breaks: true,
-  gfm: true
-})
+  gfm: true,
+});
 
 const renderedContent = computed(() => {
   if (!props.content) {
-    return '<p class="empty-hint">在左侧输入Markdown内容，这里会实时预览...</p>'
+    return '<p class="empty-hint">在左侧输入Markdown内容，这里会实时预览...</p>';
   }
-  return marked.parse(props.content)
-})
+  return marked.parse(props.content);
+});
 </script>
 
 <style scoped>
@@ -32,7 +32,9 @@ const renderedContent = computed(() => {
   padding: 16px;
   height: 100%;
   overflow-y: auto;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial, sans-serif;
   font-size: 14px;
   line-height: 1.6;
   color: #333;

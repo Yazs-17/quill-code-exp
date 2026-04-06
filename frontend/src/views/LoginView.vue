@@ -2,7 +2,7 @@
   <div class="auth-container">
     <div class="auth-card">
       <h2>登录</h2>
-      
+
       <form @submit.prevent="handleLogin" class="auth-form">
         <div class="form-group">
           <label for="username">用户名</label>
@@ -45,40 +45,40 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
-import { useAuthStore } from '../stores/auth'
+import { ref, reactive } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import { useAuthStore } from '../stores/auth';
 
-const router = useRouter()
-const route = useRoute()
-const authStore = useAuthStore()
+const router = useRouter();
+const route = useRoute();
+const authStore = useAuthStore();
 
 const form = reactive({
   username: '',
-  password: ''
-})
+  password: '',
+});
 
-const loading = ref(false)
-const errorMsg = ref('')
+const loading = ref(false);
+const errorMsg = ref('');
 
 async function handleLogin() {
   if (!form.username || !form.password) {
-    errorMsg.value = '请填写所有字段'
-    return
+    errorMsg.value = '请填写所有字段';
+    return;
   }
 
-  loading.value = true
-  errorMsg.value = ''
+  loading.value = true;
+  errorMsg.value = '';
 
   try {
-    await authStore.login(form.username, form.password)
+    await authStore.login(form.username, form.password);
     // Redirect to intended page or home
-    const redirect = route.query.redirect || '/'
-    router.push(redirect)
+    const redirect = route.query.redirect || '/';
+    router.push(redirect);
   } catch (err) {
-    errorMsg.value = err.message || '登录失败，请检查用户名和密码'
+    errorMsg.value = err.message || '登录失败，请检查用户名和密码';
   } finally {
-    loading.value = false
+    loading.value = false;
   }
 }
 </script>

@@ -21,10 +21,10 @@
         <div v-if="shareUrl" class="share-result">
           <label>分享链接</label>
           <div class="share-url-container">
-            <input 
-              type="text" 
-              :value="shareUrl" 
-              readonly 
+            <input
+              type="text"
+              :value="shareUrl"
+              readonly
               class="share-url-input"
               ref="urlInput"
             />
@@ -32,110 +32,108 @@
               {{ copied ? '已复制' : '复制' }}
             </button>
           </div>
-          <p class="expires-info">
-            链接将于 {{ formattedExpiresAt }} 过期
-          </p>
+          <p class="expires-info">链接将于 {{ formattedExpiresAt }} 过期</p>
         </div>
       </div>
 
       <div class="dialog-footer">
-        <button 
+        <button
           v-if="!shareUrl"
-          class="create-btn" 
+          class="create-btn"
           :disabled="creating"
           @click="createShare"
         >
           {{ creating ? '创建中...' : '创建分享链接' }}
         </button>
-        <button 
-          v-else
-          class="new-btn" 
-          @click="resetShare"
-        >
-          创建新链接
-        </button>
+        <button v-else class="new-btn" @click="resetShare">创建新链接</button>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import { shareService } from '../../services'
+import { ref, computed } from 'vue';
+import { shareService } from '../../services';
 
 const props = defineProps({
   articleId: {
     type: String,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 
-const emit = defineEmits(['close', 'created'])
+const emit = defineEmits(['close', 'created']);
 
-const expiresInDays = ref(7)
-const creating = ref(false)
-const shareData = ref(null)
-const copied = ref(false)
+const expiresInDays = ref(7);
+const creating = ref(false);
+const shareData = ref(null);
+const copied = ref(false);
 
 const shareUrl = computed(() => {
-  if (!shareData.value) return ''
-  return `${window.location.origin}/share/${shareData.value.token}`
-})
+  if (!shareData.value) return '';
+  return `${window.location.origin}/share/${shareData.value.token}`;
+});
 
 const formattedExpiresAt = computed(() => {
-  if (!shareData.value) return ''
-  const date = new Date(shareData.value.expiresAt)
+  if (!shareData.value) return '';
+  const date = new Date(shareData.value.expiresAt);
   return date.toLocaleDateString('zh-CN', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
     hour: '2-digit',
-    minute: '2-digit'
-  })
-})
+    minute: '2-digit',
+  });
+});
 
 async function createShare() {
-  if (creating.value) return
-  
-  creating.value = true
+  if (creating.value) return;
+
+  creating.value = true;
   try {
-    const result = await shareService.createShare(props.articleId, expiresInDays.value)
-    shareData.value = result
-    emit('created', result)
+    const result = await shareService.createShare(
+      props.articleId,
+      expiresInDays.value,
+    );
+    shareData.value = result;
+    emit('created', result);
   } catch (err) {
-    console.error('Failed to create share:', err)
-    alert('创建分享链接失败: ' + (err.message || '未知错误'))
+    console.error('Failed to create share:', err);
+    alert('创建分享链接失败: ' + (err.message || '未知错误'));
   } finally {
-    creating.value = false
+    creating.value = false;
   }
 }
 
 function copyUrl() {
-  if (!shareUrl.value) return
-  
-  navigator.clipboard.writeText(shareUrl.value).then(() => {
-    copied.value = true
-    setTimeout(() => {
-      copied.value = false
-    }, 2000)
-  }).catch(() => {
-    // Fallback for older browsers
-    const input = document.createElement('input')
-    input.value = shareUrl.value
-    document.body.appendChild(input)
-    input.select()
-    document.execCommand('copy')
-    document.body.removeChild(input)
-    copied.value = true
-    setTimeout(() => {
-      copied.value = false
-    }, 2000)
-  })
+  if (!shareUrl.value) return;
+
+  navigator.clipboard
+    .writeText(shareUrl.value)
+    .then(() => {
+      copied.value = true;
+      setTimeout(() => {
+        copied.value = false;
+      }, 2000);
+    })
+    .catch(() => {
+      // Fallback for older browsers
+      const input = document.createElement('input');
+      input.value = shareUrl.value;
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand('copy');
+      document.body.removeChild(input);
+      copied.value = true;
+      setTimeout(() => {
+        copied.value = false;
+      }, 2000);
+    });
 }
 
 function resetShare() {
-  shareData.value = null
-  copied.value = false
+  shareData.value = null;
+  copied.value = false;
 }
 </script>
 
@@ -269,7 +267,8 @@ function resetShare() {
   justify-content: flex-end;
 }
 
-.create-btn, .new-btn {
+.create-btn,
+.new-btn {
   padding: 10px 24px;
   border-radius: 6px;
   font-size: 14px;

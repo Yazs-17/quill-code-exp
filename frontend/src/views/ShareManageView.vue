@@ -17,14 +17,16 @@
       />
 
       <div v-else class="shares-list">
-        <div 
-          v-for="share in shares" 
-          :key="share.id" 
+        <div
+          v-for="share in shares"
+          :key="share.id"
           class="share-card"
           :class="{ expired: isExpired(share) }"
         >
           <div class="share-info">
-            <h3 class="article-title">{{ share.article?.title || '未知文章' }}</h3>
+            <h3 class="article-title">
+              {{ share.article?.title || '未知文章' }}
+            </h3>
             <div class="share-meta">
               <span class="share-status" :class="{ expired: isExpired(share) }">
                 {{ isExpired(share) ? '已过期' : '有效' }}
@@ -33,30 +35,29 @@
                 创建于 {{ formatDate(share.createdAt) }}
               </span>
               <span class="share-expires">
-                {{ isExpired(share) ? '已于' : '将于' }} {{ formatDate(share.expiresAt) }} {{ isExpired(share) ? '过期' : '过期' }}
+                {{ isExpired(share) ? '已于' : '将于' }}
+                {{ formatDate(share.expiresAt) }}
+                {{ isExpired(share) ? '过期' : '过期' }}
               </span>
             </div>
           </div>
 
           <div class="share-actions">
-            <button 
-              class="copy-btn" 
+            <button
+              class="copy-btn"
               :disabled="isExpired(share)"
               @click="copyShareUrl(share)"
             >
               {{ copiedId === share.id ? '已复制' : '复制链接' }}
             </button>
-            <button 
+            <button
               class="preview-btn"
               :disabled="isExpired(share)"
               @click="previewShare(share)"
             >
               预览
             </button>
-            <button 
-              class="delete-btn"
-              @click="confirmDelete(share)"
-            >
+            <button class="delete-btn" @click="confirmDelete(share)">
               删除
             </button>
           </div>
@@ -65,12 +66,18 @@
     </div>
 
     <!-- Delete confirmation dialog -->
-    <div v-if="showDeleteDialog" class="dialog-overlay" @click.self="showDeleteDialog = false">
+    <div
+      v-if="showDeleteDialog"
+      class="dialog-overlay"
+      @click.self="showDeleteDialog = false"
+    >
       <div class="dialog">
         <h3>确认删除</h3>
         <p>确定要删除这个分享链接吗？删除后访客将无法通过此链接访问文章。</p>
         <div class="dialog-actions">
-          <button class="cancel-btn" @click="showDeleteDialog = false">取消</button>
+          <button class="cancel-btn" @click="showDeleteDialog = false">
+            取消
+          </button>
           <button class="confirm-btn" @click="deleteShare">确认删除</button>
         </div>
       </div>
@@ -79,107 +86,110 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-import { shareService } from '../services'
-import { useUiStore } from '../stores/ui'
-import { AppLayout } from '../components/layout'
-import { LoadingState, EmptyState } from '../components/common'
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { shareService } from '../services';
+import { useUiStore } from '../stores/ui';
+import { AppLayout } from '../components/layout';
+import { LoadingState, EmptyState } from '../components/common';
 
-const router = useRouter()
-const uiStore = useUiStore()
+const router = useRouter();
+const uiStore = useUiStore();
 
-const loading = ref(true)
-const shares = ref([])
-const showDeleteDialog = ref(false)
-const shareToDelete = ref(null)
-const copiedId = ref(null)
+const loading = ref(true);
+const shares = ref([]);
+const showDeleteDialog = ref(false);
+const shareToDelete = ref(null);
+const copiedId = ref(null);
 
 async function loadShares() {
-  loading.value = true
+  loading.value = true;
   try {
-    shares.value = await shareService.getMyShares()
+    shares.value = await shareService.getMyShares();
   } catch (err) {
-    console.error('Failed to load shares:', err)
+    console.error('Failed to load shares:', err);
   } finally {
-    loading.value = false
+    loading.value = false;
   }
 }
 
 function isExpired(share) {
-  return new Date() > new Date(share.expiresAt)
+  return new Date() > new Date(share.expiresAt);
 }
 
 function formatDate(dateStr) {
-  const date = new Date(dateStr)
+  const date = new Date(dateStr);
   return date.toLocaleDateString('zh-CN', {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
     hour: '2-digit',
-    minute: '2-digit'
-  })
+    minute: '2-digit',
+  });
 }
 
 function getShareUrl(share) {
-  return `${window.location.origin}/share/${share.token}`
+  return `${window.location.origin}/share/${share.token}`;
 }
 
 function copyShareUrl(share) {
-  const url = getShareUrl(share)
-  navigator.clipboard.writeText(url).then(() => {
-    copiedId.value = share.id
-    uiStore.showToast('链接已复制', 'success')
-    setTimeout(() => {
-      copiedId.value = null
-    }, 2000)
-  }).catch(() => {
-    // Fallback
-    const input = document.createElement('input')
-    input.value = url
-    document.body.appendChild(input)
-    input.select()
-    document.execCommand('copy')
-    document.body.removeChild(input)
-    copiedId.value = share.id
-    uiStore.showToast('链接已复制', 'success')
-    setTimeout(() => {
-      copiedId.value = null
-    }, 2000)
-  })
+  const url = getShareUrl(share);
+  navigator.clipboard
+    .writeText(url)
+    .then(() => {
+      copiedId.value = share.id;
+      uiStore.showToast('链接已复制', 'success');
+      setTimeout(() => {
+        copiedId.value = null;
+      }, 2000);
+    })
+    .catch(() => {
+      // Fallback
+      const input = document.createElement('input');
+      input.value = url;
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand('copy');
+      document.body.removeChild(input);
+      copiedId.value = share.id;
+      uiStore.showToast('链接已复制', 'success');
+      setTimeout(() => {
+        copiedId.value = null;
+      }, 2000);
+    });
 }
 
 function previewShare(share) {
-  window.open(`/share/${share.token}`, '_blank')
+  window.open(`/share/${share.token}`, '_blank');
 }
 
 function confirmDelete(share) {
-  shareToDelete.value = share
-  showDeleteDialog.value = true
+  shareToDelete.value = share;
+  showDeleteDialog.value = true;
 }
 
 async function deleteShare() {
-  if (!shareToDelete.value) return
-  
+  if (!shareToDelete.value) return;
+
   try {
-    await shareService.deleteShare(shareToDelete.value.id)
-    shares.value = shares.value.filter(s => s.id !== shareToDelete.value.id)
-    uiStore.showToast('分享链接已删除', 'success')
+    await shareService.deleteShare(shareToDelete.value.id);
+    shares.value = shares.value.filter((s) => s.id !== shareToDelete.value.id);
+    uiStore.showToast('分享链接已删除', 'success');
   } catch (err) {
-    console.error('Failed to delete share:', err)
+    console.error('Failed to delete share:', err);
   } finally {
-    showDeleteDialog.value = false
-    shareToDelete.value = null
+    showDeleteDialog.value = false;
+    shareToDelete.value = null;
   }
 }
 
 function goHome() {
-  router.push({ name: 'Home' })
+  router.push({ name: 'Home' });
 }
 
 onMounted(() => {
-  loadShares()
-})
+  loadShares();
+});
 </script>
 
 <style scoped>
@@ -260,7 +270,9 @@ onMounted(() => {
   flex-shrink: 0;
 }
 
-.copy-btn, .preview-btn, .delete-btn {
+.copy-btn,
+.preview-btn,
+.delete-btn {
   padding: 8px 16px;
   border-radius: 4px;
   font-size: 13px;
@@ -369,7 +381,7 @@ onMounted(() => {
     align-items: flex-start;
     gap: 12px;
   }
-  
+
   .share-actions {
     width: 100%;
     justify-content: flex-end;

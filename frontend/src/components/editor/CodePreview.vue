@@ -3,9 +3,9 @@
     <div class="preview-header">
       <span class="preview-title">执行结果</span>
       <div class="preview-actions">
-        <button 
-          v-if="logs.length > 0" 
-          class="clear-btn" 
+        <button
+          v-if="logs.length > 0"
+          class="clear-btn"
           @click="clearLogs"
           title="清空"
         >
@@ -13,20 +13,20 @@
         </button>
       </div>
     </div>
-    
+
     <div class="preview-content" ref="contentRef">
       <div v-if="isRunning" class="running-indicator">
         <span class="spinner"></span>
         <span>执行中...</span>
       </div>
-      
+
       <div v-else-if="logs.length === 0" class="empty-state">
         <span>点击运行按钮执行代码</span>
       </div>
-      
+
       <div v-else class="log-list">
-        <div 
-          v-for="(log, index) in logs" 
+        <div
+          v-for="(log, index) in logs"
           :key="index"
           class="log-item"
           :class="'log-' + log.type"
@@ -40,22 +40,22 @@
 </template>
 
 <script setup>
-import { ref, watch, nextTick } from 'vue'
+import { ref, watch, nextTick } from 'vue';
 
 const props = defineProps({
   logs: {
     type: Array,
-    default: () => []
+    default: () => [],
   },
   isRunning: {
     type: Boolean,
-    default: false
-  }
-})
+    default: false,
+  },
+});
 
-const emit = defineEmits(['clear'])
+const emit = defineEmits(['clear']);
 
-const contentRef = ref(null)
+const contentRef = ref(null);
 
 function getLogTypeLabel(type) {
   const labels = {
@@ -64,23 +64,26 @@ function getLogTypeLabel(type) {
     warn: 'WARN',
     error: 'ERROR',
     result: 'RESULT',
-    success: 'OK'
-  }
-  return labels[type] || type.toUpperCase()
+    success: 'OK',
+  };
+  return labels[type] || type.toUpperCase();
 }
 
 function clearLogs() {
-  emit('clear')
+  emit('clear');
 }
 
 // Auto-scroll to bottom when new logs are added
-watch(() => props.logs.length, () => {
-  nextTick(() => {
-    if (contentRef.value) {
-      contentRef.value.scrollTop = contentRef.value.scrollHeight
-    }
-  })
-})
+watch(
+  () => props.logs.length,
+  () => {
+    nextTick(() => {
+      if (contentRef.value) {
+        contentRef.value.scrollTop = contentRef.value.scrollHeight;
+      }
+    });
+  },
+);
 </script>
 
 <style scoped>
@@ -152,7 +155,9 @@ watch(() => props.logs.length, () => {
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .empty-state {
@@ -192,15 +197,35 @@ watch(() => props.logs.length, () => {
   flex: 1;
 }
 
-.log-log .log-type { color: #d4d4d4; }
-.log-info .log-type { color: #569cd6; }
-.log-warn .log-type { color: #ce9178; }
-.log-error .log-type { color: #f14c4c; }
-.log-result .log-type { color: #4ec9b0; }
-.log-success .log-type { color: #6a9955; }
+.log-log .log-type {
+  color: #d4d4d4;
+}
+.log-info .log-type {
+  color: #569cd6;
+}
+.log-warn .log-type {
+  color: #ce9178;
+}
+.log-error .log-type {
+  color: #f14c4c;
+}
+.log-result .log-type {
+  color: #4ec9b0;
+}
+.log-success .log-type {
+  color: #6a9955;
+}
 
-.log-error .log-text { color: #f14c4c; }
-.log-warn .log-text { color: #ce9178; }
-.log-result .log-text { color: #4ec9b0; }
-.log-success .log-text { color: #6a9955; }
+.log-error .log-text {
+  color: #f14c4c;
+}
+.log-warn .log-text {
+  color: #ce9178;
+}
+.log-result .log-text {
+  color: #4ec9b0;
+}
+.log-success .log-text {
+  color: #6a9955;
+}
 </style>

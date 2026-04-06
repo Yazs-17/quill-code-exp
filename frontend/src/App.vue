@@ -1,6 +1,6 @@
 <script setup>
-import { RouterView } from 'vue-router'
-import AppToast from './components/common/AppToast.vue'
+import { RouterView } from 'vue-router';
+import AppToast from './components/common/AppToast.vue';
 </script>
 
 <template>
@@ -19,12 +19,16 @@ import AppToast from './components/common/AppToast.vue'
   --success: #28a745;
 }
 
-html, body, #app {
+html,
+body,
+#app {
   margin: 0;
   padding: 0;
   height: 100%;
   width: 100%;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+    sans-serif;
 }
 
 * {
@@ -59,14 +63,18 @@ button:disabled {
   cursor: not-allowed;
 }
 
-input, textarea, select {
+input,
+textarea,
+select {
   padding: 8px 12px;
   border: 1px solid var(--hui);
   border-radius: 4px;
   font-size: 14px;
 }
 
-input:focus, textarea:focus, select:focus {
+input:focus,
+textarea:focus,
+select:focus {
   outline: none;
   border-color: var(--primary);
   box-shadow: 0 0 0 2px rgba(74, 144, 217, 0.2);
