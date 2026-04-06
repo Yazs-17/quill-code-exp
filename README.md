@@ -63,3 +63,7 @@ npm install
 npm run dev
 ```
 
+### 测试账密
+
+账: admin
+密: adminsjb
